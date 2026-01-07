@@ -15,18 +15,22 @@ int main(){
         cout << "Unable to open" << endl;
         return -1;
     }
+    int testRow;
+    int testCol;
+    cout << "Enter test row and column: ";
 
-    int testRow = 50;
-    int testCol = 50;
-    //cout << "Unmodified pixel at (" << testRow << ", " << testCol << "): " << endl;
-    //testPixel(input, testRow, testCol);
+    cin >> testRow >> testCol;
+    cout << "/n";
+
+    cout << "Unmodified pixel at (" << testRow << ", " << testCol << "): " << endl;
+    testPixel(input, testRow, testCol);
 
     RBmodify(input);
 
     
 
-    //cout << "Modified pixel at (" << testRow << ", " << testCol << "): " << endl;
-    //testPixel(input, testRow, testCol);
+    cout << "Modified pixel at (" << testRow << ", " << testCol << "): " << endl;
+    testPixel(input, testRow, testCol);
     flipImage(input);
 
     WriteGIF("output.gif", input);
@@ -66,15 +70,15 @@ void testPixel(image in, int row, int col){
 }
 
 void flipImage(image in){
+    //create copy to pull from
+    image copy = CopyImage(in);
     for (int row = 0; row < in.rows; row++){
-		for (int col = 0, i = in.cols; col < in.cols / 2; col++, i--){
+		for (int col = 0, i = in.cols; col < in.cols; col++, i--){
             pixel &p = in.pixels[row][col];
-                pixel s = in.pixels[row][i];
+                pixel s = copy.pixels[row][i];
             p.red = s.red;
             p.green = s.green;
             p.blue = s.blue;
         }
-        //problem: after it gets halfway through pixels, 
-        // its pulling from what it already copied. 
     }
 }
