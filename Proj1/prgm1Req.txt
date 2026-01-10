@@ -1,0 +1,12 @@
+Edit Program1.cpp to accomplish the following in order:
+Read the image "test1.gif" into a variable.
+For every pixel of this image:
+Subtract row % 7 from the blue component of the pixel, where row is the row of the current pixel.
+Add col % 9 to the red component of the pixel, where col is the column of the current pixel.
+Leave the green component unchanged.
+Make sure to check for overflow and underflow, since bytes are unable to store values below 0 or above 255. If you find underflow, set the byte to 0. If you find overflow set the byte to 255.
+Flip the entire image horizontally (mirror-image), so that the left becomes the right and vice versa.
+Save the image to a file called "output.gif".
+Read "output.gif" into a new image variable.
+Compare each pixel in the newly read image to the one that you just saved. Count the number of pixels that differ in any color channel. There will be many!
+Output to the console the number of differing pixels, the total number of pixels in the image, and the fraction that are different.
