@@ -1,0 +1,22 @@
+2. Download and try to compile the file. Why doesn't it compile? I'm not just looking for which line(s) have the problem, but rather what is wrong with those line(s).
+3. What is happening when onePlus() is called? In other words, what exactly does the function receive as an argument? Why isn't the value of the variable in main() altered?
+4. Conversely, consider the call to refIncrement(). What is the argument here and why is the value of the variable in main() changed?
+5. Finally, consider the code related to value(). First of all, make sure you understand what Pair is and what the declaration of pairs means.
+6. Next, consider a call to value(). What does the function receive as an argument? What is the meaning of const in this context?
+7. What does value() return? How can it be legal and what does it mean to apply the ++operator to its return value?
+
+2. The error I get when trying to complile the code is a unitialized refrence 'int& xr'. The problem is a new int xr is being made as a refrence,
+ but its not initialized to anything. A valid way of writing it could be int& xr = x. Refrences take the value of another peice of data, but under a different 
+ name, so that means it must be tied to some exisiting peice of data to begin with.
+
+3. onePlus() is receiveing a integer passed by value and will increment the value passed in by one, but not altering it it is only recieving a copy of the arguement. 
+If it were a refrence, it would modify the value. 
+
+4. refIncrement() is similar in functionality to onePlus(), but instead it is passed by refrence, hence changing the value stored. 
+
+5. Pair is a struct which stores two peices of data: a string name and a integer val. The vector pairs stores Pair structs.
+
+6. The function value() recieves a string as the arguement. The const will make sure the string will not be modified.
+
+7.value() searches the vector and the value from the matching pair. Its legal because it returns a refrence to the value. The ++operator will modify the 
+original pair.val and add one to it.
