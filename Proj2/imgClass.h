@@ -5,6 +5,7 @@ Header file for img class. Implements functions which unitilizes the image libra
 
 #include <iostream>
 #include "ImageLib.h"
+#include <ostream>
 #include <string>
 using namespace std;
 
@@ -45,19 +46,27 @@ void outputFile(string filename);
 // ===== operator overloads ======
 
 //operator==
-
+bool operator==(const img& rhs) const;
 //operator!=
-
+bool operator!=(const img& rhs) const;
 //operator>
-
+bool operator<(const img& rhs) const;
 //operator<
-
+bool operator>(const img& rhs) const;
 //operator<<
-
+//Question: why do i have to use friend if its in the class??
+friend ostream& operator<<(ostream& os, const img& i);
 
 //mirror image -- pass img obj by value, which in turn makes a copy of the img, then return that copy
 img mirrorImage(img i);
 
+img mirrorImage2();
+
 private:
 image myImage;
 };
+//operator<<
+//have to use friend or cant access private member vars, but have to use friend in class?? 
+//friend ofstream& operator<<(ostream& os, const img& i);
+//confused...
+ostream& operator<<(ostream& os, const img& i);

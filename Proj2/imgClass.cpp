@@ -1,5 +1,4 @@
 #include "ImageLib.h"
-#include <algorithm>
 #include "imgClass.h"
 
 //loads a file
@@ -30,7 +29,6 @@ const img &img::operator=(const img &rhs) {
 //getRows 
 int img::getRows(){
     return myImage.rows;
-
 }
 
 //getCols
@@ -68,7 +66,7 @@ void img::outputFile(string filename){
     WriteGIF(filename, myImage);
 }
 
-//mirror image
+//mirror image passed by value 
 img img::mirrorImage(img i){
     image copy = CopyImage(myImage);
     for (int row = 0; row < i.myImage.rows; row++) {
@@ -80,3 +78,61 @@ img img::mirrorImage(img i){
     DeallocateImage(copy);
     return i;
 }
+
+//this will modify the image because it uses a pointer
+img img::mirrorImage2(){
+    image copy = CopyImage(myImage);
+    for (int row = 0; row < this->getRows(); row++) {
+        for (int col = 0; col < this->getCols(); col++) {
+            //assign pixels from 'copy' to 'in' in reversed column order
+            this->myImage.pixels[row][col] = copy.pixels[row][this->myImage.cols - 1 - col]; 
+        }
+    }
+    //deallocate memory for copy image - no longer needed
+    DeallocateImage(copy);
+    //derefrence the img pointer
+    return *this;
+}
+
+bool img::operator==(const img& rhs) const {
+       for (int row = 0; row < rhs.myImage.rows; row++){ 
+		for (int col = 0; col < rhs.myImage.cols; col++){
+           pixel inP = rhs.myImage.pixels[row][col]; 
+            pixel outP = myImage.pixels[row][col]; //this-> or myImage??
+            //compare pixels
+            if(inP.blue != outP.blue || inP.green != outP.green || inP.red != outP.red){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool img::operator!=(const img& rhs) const {
+    //use the operator== for simplification
+    //'this' is lhs img (* for dereference)
+    return !(*this == rhs);
+}
+
+
+bool img::operator<(const img& rhs) const{
+    int lhsPixels = myImage.rows * myImage.cols;
+    int rhsPixels = rhs.myImage.rows * rhs.myImage.cols;
+    if (lhsPixels < rhsPixels){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool img::operator>(const img& rhs) const{
+    //use the operator<
+    return rhs < *this;
+}
+//cant use friend version in definition?
+ostream& operator<<(ostream& os, const img& i){
+    os << "Rows: " << i.myImage.rows << " |  Cols: " << i.myImage.cols;
+    return os;
+}
+//Question: why would we make a operator overload not in a member function?
+//Question: is it okay to use overloaded operators in other operator overloads
