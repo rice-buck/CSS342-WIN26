@@ -15,7 +15,7 @@ int main(){
     cout << img1 << endl;
 
     //Create a mirror-image using the member function
-    img img2 = img1.mirrorImage(img1);
+    img img2 = img1.mirrorImage();
 
 
     //For every pixel, subtract row % 7 from the blue component and add col % 9 to the red component.

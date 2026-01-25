@@ -51,19 +51,19 @@ void img::outputFile(string filename){
 
 //preconditon: none
 //postcondition: returns number of rows
-int img::getRows(){
+int img::getRows() const{
     return myImage.rows;
 }
 
 //precondition: none
 //postcondition: returns number of columns
-int img::getCols(){
+int img::getCols() const{
     return myImage.cols;
 }
 
 //precondition: row and col are valid pixel locations, color is 'r', 'g', or 'b'
 //postcondition: returns the value of the specified color component at the given pixel
-int img::getPixel(int row, int col, char color){
+int img::getPixel(int row, int col, char color) const{
     //check for valid pixel location
     if(row < 0 || row >= myImage.rows || col < 0 || col >= myImage.cols){
         throw out_of_range("Row or column is out of image bounds at getPixel()");
@@ -105,21 +105,19 @@ void img::setPixel(int row, int col, int newRed, int newGreen, int newBlue){
 //mirrorImage: creates and returns a mirror image of the img passed in
 //precondition: i is a valid img object
 //postcondition: returns a new img object that is the mirror image of i
-img img::mirrorImage(img i){
-    image copy = CopyImage(myImage);
-    for (int row = 0; row < i.myImage.rows; row++) {
-        for (int col = 0; col < i.myImage.cols; col++) {
-            //assign pixels from 'copy' to 'i' in reversed column order
-            i.myImage.pixels[row][col] = copy.pixels[row][i.myImage.cols - 1 - col]; 
+img img::mirrorImage() const{
+    img result(myImage.rows, myImage.cols); //create new img object with same dimensions
+    for (int row = 0; row < myImage.rows; row++) {
+        for (int col = 0; col < myImage.cols; col++) {
+            //assign pixels from 'myImage' to 'result' in reversed column order
+            result.myImage.pixels[row][col] = myImage.pixels[row][myImage.cols - 1 - col];  
         }
     }
-    DeallocateImage(copy);
-    return i;
+    return result;
 }
 
 // ===== operator overloads ======
 
-//operator=
 //precondition: rhs is a valid img object
 //postcondition: assigns rhs img to this img
 const img &img::operator=(const img &rhs) {
@@ -131,14 +129,18 @@ const img &img::operator=(const img &rhs) {
   return *this;
 }
 
-//operator==
 //precondition: rhs is a valid img object
 //postcondition: returns true if the two images are identical, false otherwise
 bool img::operator==(const img& rhs) const {
+    //first check if dimensions are the same
+    if (myImage.rows != rhs.myImage.rows || myImage.cols != rhs.myImage.cols){
+        return false;
+    }
+    //compare each pixel in both images
        for (int row = 0; row < rhs.myImage.rows; row++){ 
 		for (int col = 0; col < rhs.myImage.cols; col++){
            pixel inP = rhs.myImage.pixels[row][col]; 
-            pixel outP = myImage.pixels[row][col]; //this-> or myImage??
+            pixel outP = myImage.pixels[row][col]; 
             //compare each pixel color channel return false if any differ
             if(inP.blue != outP.blue || inP.green != outP.green || inP.red != outP.red){
                 return false;
@@ -149,7 +151,6 @@ bool img::operator==(const img& rhs) const {
     return true;
 }
 
-//operator!=
 //precondition: rhs is a valid img object
 //postcondition: returns true if the two images are different, false otherwise
 bool img::operator!=(const img& rhs) const {
@@ -158,7 +159,6 @@ bool img::operator!=(const img& rhs) const {
     return !(*this == rhs);
 }
 
-//operator>
 //precondition: rhs is a valid img object
 //postcondition: returns true if this img has more pixels than rhs, false otherwise
 bool img::operator<(const img& rhs) const{
@@ -172,7 +172,6 @@ bool img::operator<(const img& rhs) const{
     }
 }
 
-//operator<
 //precondition: rhs is a valid img object
 //postcondition: returns true if this img has less pixels than rhs, false otherwise
 bool img::operator>(const img& rhs) const{
@@ -180,11 +179,10 @@ bool img::operator>(const img& rhs) const{
     return rhs < *this;
 }
 
-//operator<<
 //precondition: os is a valid output stream, i is a valid img object
 //postcondition: outputs the dimensions of the image to the output stream
 ostream& operator<<(ostream& os, const img& i){
     //output the rows and columns of the image
-    os << "Rows: " << i.myImage.rows << " |  Cols: " << i.myImage.cols;
+    os << "Rows: " << i.getRows() << " |  Cols: " << i.getCols();
     return os;
 }
