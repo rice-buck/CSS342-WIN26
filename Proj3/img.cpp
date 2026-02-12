@@ -1,6 +1,6 @@
 #include "ImageLib.h"
 #include <stdexcept>
-#include "imgClass.h"
+#include "img.h"
 
 //constructor reads from a file using a filename and ReadGif()
 //Precondition: none
@@ -8,6 +8,7 @@
 img::img (string filename){
     myImage = ReadGIF(filename);
 }
+
 
 //constructor to create blank image
 //Precondition: rows and cols are integers

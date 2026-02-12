@@ -8,7 +8,7 @@ flip the image horizontally, output to terminal the differing pixels, and finall
 #include "ImageLib.h"
 
 //string for filename
-const std::string fileName = "President_Barack_Obama.gif";
+const std::string fileName = "test1.gif";
 
 //forward declerations
 void comparePixels(image in, image out);
