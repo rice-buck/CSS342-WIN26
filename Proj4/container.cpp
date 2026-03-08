@@ -5,9 +5,14 @@ This class uses a linked list to store pixel data via a PixelNode struct.
 */
 
 #include "container.h"
+#include "ImageLib.h"
+#include <algorithm>
 
     //===Default constructor===
     //container head set to nullptr
+    container::container() {
+        head = nullptr;
+    }
 
 
     //===Copy Helper Function==== 
@@ -19,6 +24,20 @@ This class uses a linked list to store pixel data via a PixelNode struct.
 
     //once the base case is hit and the last node is set to nullptr,
     //it will return the head node of the newly copied list
+    PixelNode *container::copyHelper(PixelNode *originalNode){
+        //base case and set last node to nullptr
+        //also handles if original container is empty
+        if(originalNode == nullptr) return nullptr;
+
+        //new copy node with original nodes data
+        PixelNode *newNode = new PixelNode(originalNode->row, originalNode->col, originalNode->pix);
+
+        //recursive call
+        newNode->next = copyHelper(originalNode->next);
+
+        //returns head of newly copied list
+        return newNode;
+    }
 
 
     //====Copy Constructor====
@@ -29,6 +48,10 @@ This class uses a linked list to store pixel data via a PixelNode struct.
 
     // newly copied container now contains head node linked to all the 
     // copied data of the original container
+    container::container(const container& other){
+        //contains the head of copied container
+        head = copyHelper(other.head);
+    }
 
 
     //====Destructor====
@@ -43,6 +66,15 @@ This class uses a linked list to store pixel data via a PixelNode struct.
     // after everythings deleted set
     // set head pointer to nullptr
     //}
+    container::~container(){
+        PixelNode *current = head;
+        while(current != nullptr){
+            PixelNode *nextNode = current->next;//save next node
+            delete current; //deallocate current node
+            current = nextNode; //move to next node
+        }
+        head = nullptr; //set head to nullptr at end
+    }
 
 
     //==== Assignment Operator ====
@@ -52,6 +84,15 @@ This class uses a linked list to store pixel data via a PixelNode struct.
     //Copy the data from the right hand side container to the left hand 
     // side container using the copy helper function
     //Return *this
+    container& container::operator=(const container& rhs){
+        //check for self assignement 
+        if(this == &rhs) return *this;
+        else{
+            delete this; //delete lhs data
+            this->copyHelper(rhs.head); //copy data from rhs to lhs
+            return *this; 
+        }
+    }
 
 
     //==== addPixel ====
@@ -63,7 +104,22 @@ This class uses a linked list to store pixel data via a PixelNode struct.
     //Update the head of the list to be the new node.
     //Since we have row and col data stored in the node, we can easily access the pixel data.
     //So there is no need to add the new node to the end of the list, we can just add it to the head.
+    void container::addPixel(int row, int col, const pixel&p){
+        //check for valid dimensions
 
+        //create new node for pixel data
+        PixelNode *newNode = new PixelNode(row, col, p);
+
+        //check if list is empty
+        if(head == nullptr) {
+            head = newNode;
+            return;
+        } else {
+            //add new node to front of container
+            newNode->next = head;
+            head = newNode;
+        }
+    }
 
     
     // ==== Merge Containers ====

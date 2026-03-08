@@ -19,7 +19,7 @@ struct PixelNode {
     PixelNode *next;
 
     //constructor for PixelNode that initializes the row, column, pixel data, and sets the next pointer to nullptr
-    PixelNode(int r, int c, pixel& p) : row(r), col(c), pix(p), next(nullptr) {}
+    PixelNode(int r, int c, const pixel& p) : row(r), col(c), pix(p), next(nullptr) {}
 };
 
 //container class description:
