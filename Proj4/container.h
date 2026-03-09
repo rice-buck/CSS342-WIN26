@@ -73,4 +73,7 @@ public:
     //postcondition: returns a pixel object that represents the average color value of all pixels in 
     // the container, with each color channel averaged separately
     pixel const averageColorValue();
+
+    //for testing
+    void print();
 };

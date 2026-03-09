@@ -48,3 +48,61 @@ and groups pixels into segments based on color similarity.
 //Save gif file to some name and save.
 
 
+#include <iostream>
+#include "ImageLib.h"
+#include "container.h"
+#include "img.h"
+
+int main(){
+    pixel p;
+    p.blue = (byte)10;
+    p.red = (byte)10;
+    p.green = (byte)10;
+
+    pixel p2;
+    p2.blue = (byte)20;
+    p2.red = (byte)20;
+    p2.green = (byte)20;
+
+    pixel p3;
+    p3.blue = (byte)30;
+    p3.red = (byte)30;
+    p3.green = (byte)30;
+
+    container cont;
+    container massa;
+
+    cont.addPixel(1, 1, p);
+    cont.addPixel(200, 200,  p2);
+    std::cout << std::endl;
+    std::cout << "cont 1" << std::endl;
+    cont.print();
+    std::cout << std::endl;
+    std::cout << "massa 1" << std::endl;
+    massa.print();
+    cont.averageColorValue();
+
+    // massa.merge(cont);
+    // std::cout << std::endl;
+    // std::cout << "cont 2" << std::endl;
+    // cont.print();
+    // std::cout << std::endl;
+    // std::cout << "massa 2" << std::endl;
+    // massa.print();
+
+    // container cont3;
+
+    // cont3.addPixel(300, 300, p3);
+    // cont3.addPixel(150, 150, p);
+
+    // massa.merge(cont3);
+
+    // std::cout << std::endl;
+    // std::cout << "massa 3" << std::endl;
+    // massa.print();
+
+    // std::cout << std::endl;
+    // cont3.print();
+
+    return 0;
+}

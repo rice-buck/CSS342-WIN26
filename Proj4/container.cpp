@@ -94,7 +94,6 @@ This class uses a linked list to store pixel data via a PixelNode struct.
         }
     }
 
-
     //==== addPixel ====
     //Check for valid demensions
     //Create a new Node for pixel data to be stored
@@ -120,13 +119,42 @@ This class uses a linked list to store pixel data via a PixelNode struct.
             head = newNode;
         }
     }
+void container::print(){
 
+        PixelNode* current = head;
+
+        while(current != nullptr){
+            int red = (int)current->pix.red;
+            int green = (int)current->pix.green;
+            int blue = (int)current->pix.blue;
+            int row = current->row;
+            int col = current->col;
+
+            std::cout << "Pixel location: " << "(" << row << ", " << col << ")"<< std::endl;
+            std::cout << "RGB = " << "(" << red << ", " << green << ", " << blue << ")" << std::endl;
+            current = current->next;
+        }
+    }
     
     // ==== Merge Containers ====
     // create a copy of the container passed in using the copy helper function.
     // check: copy of list passed in != empty
     // if master list == empty  set the head of the master list to the head of the copied list and return
     // if master list != empty, then:
+    void container::merge(const container other){
+        PixelNode *copyHead = copyHelper(other.head);
+        PixelNode *masterCurrent = head;
+
+        if (head == nullptr) {
+            head = copyHead;
+        } else {
+            while (masterCurrent->next != nullptr){
+                masterCurrent = masterCurrent->next;
+            }
+            //set last node of master to head of passed in container
+            masterCurrent->next = copyHead;
+        }
+    }
 
     // while loop {
     //  get current node to last node of master list
@@ -140,6 +168,34 @@ This class uses a linked list to store pixel data via a PixelNode struct.
     //while loop through the list and add up all the color values of the pixels
     //keep track of how many pixels there are in the list
     //return pixel with color value divided by the number of pixels (effectively averaging)
-    
+    pixel const container::averageColorValue(){
+        pixel p;
+        p.red = (byte)0;
+        p.green = (byte)0;
+        p.blue = (byte)0;
+        //when container is empty
+        if(head == nullptr){
+            std::cout << "WARNING: Container you're trying to average is empty!" << std::endl;
+            return p;
+        } else {
+            PixelNode *current = head;
+            int redSum = 0, blueSum = 0, greenSum = 0, counter = 0;
+            while (current != nullptr){
+                redSum += (int)current->pix.red;
+                greenSum += (int)current->pix.green;
+                blueSum += (int)current->pix.blue;
+                counter++;
+                current = current->next;
+            }
+            int redAvg = redSum / counter;
+            int greenAvg = greenSum / counter;
+            int blueAvg = blueSum / counter;
+            p.red = (byte)redAvg;
+            p.green = (byte)greenAvg;
+            p.blue = (byte)blueAvg;
+            std::cout << "(" << redAvg << ", " << greenAvg << ", " << blueAvg << ")" << std::endl;
+            return p;
+        }
+    }
 
 
